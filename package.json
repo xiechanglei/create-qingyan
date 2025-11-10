@@ -1,7 +1,7 @@
 {
   "name": "create-qingyan",
   "description": "create a local server for study programming",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "xiechanglei",
   "license": "MIT",
   "type": "commonjs",
@@ -18,6 +18,8 @@
   "dependencies": {
     "@types/node": "^22.9.0",
     "commander": "^14.0.2",
-    "crypto": "^1.0.1"
+    "crypto": "^1.0.1",
+    "marked": "^17.0.0",
+    "prismjs": "^1.30.0"
   }
 }

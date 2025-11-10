@@ -20,7 +20,7 @@ function decodeContent(base64Str) {
 }
 
 
-Prism.plugins.autoloader.languages_path = "/js/prism/";
+Prism.plugins.autoloader.languages_path = "/node_modules/prismjs/components/";
 const markdownContent = document.getElementById("md-content");
 if (markdownContent) {
     const markdownBody = document.createElement("div")

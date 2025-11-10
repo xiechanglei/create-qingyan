@@ -44,6 +44,19 @@ handles.handleAssetsRequest.canServe = (type) => {
 }
 
 /**
+ * 处理node_modules资源请求
+ * @param res - 响应对象
+ * @param reqUriDesc - 请求描述对象
+ */
+handles.handleNodeModulesRequest = (res, reqUriDesc) => {
+    const nodeModulesPath = path.resolve(__dirname) + '/../node_modules/' + reqUriDesc.resource;
+    writeFileToResponse(res, nodeModulesPath);
+}
+handles.handleNodeModulesRequest.canServe = (type) => {
+    return type === 'node_modules';
+}
+
+/**
  * 处理subject请求
  */
 handles.handleSubjectRequest = (res, reqUriDesc, subjects) => {
@@ -90,9 +103,9 @@ handles.handleSubjectRequest = (res, reqUriDesc, subjects) => {
                         .addCssLink("/css/base.css")
                         .addCssLink("/css/doc.css")
                         .addCssLink("/css/github-markdown.css")
-                        .addJsLink("/js/marked.js")
-                        .addJsLink("/js/prism/prism-core.min.js")
-                        .addJsLink("/js/prism/prism-autoloader.min.js")
+                        .addJsLink("/node_modules/marked/lib/marked.umd.js")
+                        .addJsLink("/node_modules/prismjs/prism.js")
+                        .addJsLink("/node_modules/prismjs/plugins/autoloader/prism-autoloader.js")
                         .addJsLink("/js/markdown-renderer.js")
                         .addBody(`<div id="pageContent"><div id="docBlock"><h1>${doc.name}</h1></div></div>`)
                         .addBody(`<template id="md-content">${mdContent}</template>`)
