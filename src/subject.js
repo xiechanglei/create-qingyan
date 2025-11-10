@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const basePath = path.resolve(__dirname, 'subjects');
+const basePath = path.resolve(__dirname, '../subjects');
 /**
  * 使用sha-256算法根据name生成id
  * @param name

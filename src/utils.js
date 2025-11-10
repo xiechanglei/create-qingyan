@@ -3,7 +3,7 @@ const {program} = require("commander");
 /**
  * 从package.json中获取版本号
  */
-const packageJson = require('./package.json');
+const packageJson = require('../package.json');
 
 /**
  * 从命令行参数中获取端口号

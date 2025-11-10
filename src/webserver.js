@@ -37,7 +37,7 @@ handles.handleRootRequest.canServe = (type) => {
  * @param reqUriDesc - 请求描述对象
  */
 handles.handleAssetsRequest = (res, reqUriDesc) => {
-    writeFileToResponse(res, path.resolve(__dirname) + '/assets/' + reqUriDesc.uri);
+    writeFileToResponse(res, path.resolve(__dirname) + '/../assets/' + reqUriDesc.uri);
 }
 handles.handleAssetsRequest.canServe = (type) => {
     return ['css', 'js', 'images', 'font'].includes(type);
