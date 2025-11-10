@@ -119,7 +119,7 @@ const startWebServer = (port = 3000, subjects) => {
         handle(res, reqUriDesc, subjects);
     });
     server.on('error', (e) => console.log(e.message));
-    server.listen(port, () => console.log(`Server is running at http://localhost:${port}`));
+    server.listen(port, () => console.log(`\nServer is running at http://localhost:${port}`));
 }
 
 module.exports = {
