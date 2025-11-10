@@ -115,7 +115,19 @@ const write404ToResponse = (res) => {
 const writeFileToResponse = (res, filePath) => {
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
         const contentType = getContentTypeByFilePath(filePath);
-        res.writeHead(200, {'Content-Type': contentType});
+        const ext = filePath.split('.').pop().toLowerCase();
+        
+        // Define cache control based on file type
+        let cacheControl = 'no-cache';
+        if (['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'woff', 'woff2', 'ttf', 'eot', 'otf'].includes(ext)) {
+            // Cache static assets for 1 hour
+            cacheControl = 'public, max-age=3600';
+        }
+        
+        res.writeHead(200, {
+            'Content-Type': contentType,
+            'Cache-Control': cacheControl
+        });
         const fileStream = fs.createReadStream(filePath);
         fileStream.pipe(res);
         res.on('close', () => fileStream.destroy());
