@@ -1,0 +1,22 @@
+{
+  "name": "create-qingyan",
+  "description": "create a local server for study programming",
+  "version": "1.1.0",
+  "author": "xiechanglei",
+  "license": "MIT",
+  "type": "commonjs",
+  "main": "index.js",
+  "bin": {
+    "create-qingyan": "index.js"
+  },
+  "files": [
+    "index.js",
+    "subjects",
+    "assets"
+  ],
+  "dependencies": {
+    "@types/node": "^22.9.0",
+    "commander": "^14.0.2",
+    "crypto": "^1.0.1"
+  }
+}

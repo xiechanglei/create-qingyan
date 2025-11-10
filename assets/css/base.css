@@ -1,0 +1,30 @@
+body{
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    margin: 0;
+    font-size: 13px;
+}
+*{
+    box-sizing: border-box;
+}
+
+#pageContent {
+    max-width: 1360px;
+    padding: 16px;
+    margin: 0 auto;
+}
+
+.btn {
+    transition: all 200ms ease-in-out;
+    color: #000;
+    background-color: #eee;
+    padding: 1em;
+    text-decoration: none;
+    border-radius: 5px;
+    display: block;
+    font-size: 12px;
+}
+
+.btn:hover {
+    background-color: #8957e533;
+    color: #8957e5;
+}

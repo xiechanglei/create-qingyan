@@ -1,0 +1,36 @@
+.lesson-tab {
+    display: inline-block;
+    padding: 1em;
+    margin-right: .5em;
+    cursor: pointer;
+    font-size: 12px;
+    border-bottom: 2px solid transparent;
+    color: #888;
+    font-weight: bold;
+}
+
+.lesson-tab.active, .lesson-tab:hover {
+    border-bottom: 2px solid #8957e5;
+    color: #8957e5;
+}
+
+.lesson-list {
+    display: none;
+    margin-top: 1em;
+}
+
+.lesson-list.active {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.lesson-item {
+    font-size: 12px;
+}
+
+.lesson-tab,
+.lesson-item {
+    transition: all 0.3s;
+    margin-bottom: .5em;
+}
