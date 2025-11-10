@@ -49,8 +49,12 @@ handles.handleAssetsRequest.canServe = (type) => {
  * @param reqUriDesc - 请求描述对象
  */
 handles.handleNodeModulesRequest = (res, reqUriDesc) => {
-    const nodeModulesPath = path.resolve(__dirname) + '/../node_modules/' + reqUriDesc.resource;
+    let nodeModulesPath = path.resolve(__dirname) + '/../node_modules/' + reqUriDesc.resource;
+    if (!fs.existsSync(nodeModulesPath)) { // 全局安装的模块，依赖可能在更上层的node_modules目录中
+        nodeModulesPath = path.resolve(__dirname) + '/../../' + reqUriDesc.resource;
+    }
     writeFileToResponse(res, nodeModulesPath);
+
 }
 handles.handleNodeModulesRequest.canServe = (type) => {
     return type === 'node_modules';
