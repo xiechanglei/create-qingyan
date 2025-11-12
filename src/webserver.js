@@ -1,7 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const {getContentTypeByFilePath, buildHtml, parseRequest, writeFileToResponse, write404ToResponse} = require("./html.builder");
+const {buildHtml, parseRequest, writeFileToResponse, write404ToResponse} = require("./html.builder");
 
 
 const handles = {}
@@ -77,7 +77,7 @@ handles.handleSubjectRequest = (res, reqUriDesc, subjects) => {
                     .addCssLink("/css/base.css")
                     .addJsLink("/js/subject.js")
                     .addBody("<div id='pageContent'>")
-                    .addBody("<h1>" + subject.name + "</h1>")
+                    .addBody("<h1 class='pro-title'>" + subject.name + "</h1>")
                     .addBody(`<div>${subject.lessons.map(lesson => `<span class="lesson-tab" lesson="${lesson.id}">${lesson.name}</span>`).join("")}</div>`)
                     .addBody(subject.lessons.map(lesson => `<div class="lesson-list" lesson="${lesson.id}">${lesson.docs.map(doc => `<a target="_blank" class="lesson-item btn" href="/${subject.id}/${lesson.id}/${doc.id}" >${doc.name}</a>`).join("")}</div>`).join(""))
                     .addBody("<div>")
@@ -111,7 +111,7 @@ handles.handleSubjectRequest = (res, reqUriDesc, subjects) => {
                         .addJsLink("/node_modules/prismjs/prism.js")
                         .addJsLink("/node_modules/prismjs/plugins/autoloader/prism-autoloader.js")
                         .addJsLink("/js/markdown-renderer.js")
-                        .addBody(`<div id="pageContent"><div id="docBlock"><h1>${doc.name}</h1></div></div>`)
+                        .addBody(`<div id="pageContent"><div id="docBlock"><h1 class="pro-title">${doc.name}</h1></div></div>`)
                         .addBody(`<template id="md-content">${mdContent}</template>`)
                         .build();
                     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});

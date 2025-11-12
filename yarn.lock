@@ -9,6 +9,11 @@
   dependencies:
     undici-types "~6.21.0"
 
+adm-zip@^0.5.16:
+  version "0.5.16"
+  resolved "http://36.33.27.166:14473/adm-zip/-/adm-zip-0.5.16.tgz"
+  integrity sha512-TGw5yVi4saajsSEgz25grObGHEUaDrniwvA2qwSC060KfqGPdglhvPMA2lPIoxs3PQIItj2iag35fONcQqgUaQ==
+
 commander@^14.0.2:
   version "14.0.2"
   resolved "http://36.33.27.166:14473/commander/-/commander-14.0.2.tgz"
@@ -21,7 +26,7 @@ crypto@^1.0.1:
 
 marked@^17.0.0:
   version "17.0.0"
-  resolved "http://36.33.27.166:14473/marked/-/marked-17.0.0.tgz#62ae3f2ea8346025ae24a24ad4b78982655ef4e3"
+  resolved "http://36.33.27.166:14473/marked/-/marked-17.0.0.tgz"
   integrity sha512-KkDYEWEEiYJw/KC+DVm1zzlpMQSMIu6YRltkcCvwheCp8HWPXCk9JwOmHJKBlGfzcpzcIt6x3sMnTsRm/51oDg==
 
 prismjs@^1.30.0:

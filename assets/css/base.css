@@ -28,3 +28,12 @@ body{
     background-color: #8957e533;
     color: #8957e5;
 }
+
+.pro-title {
+    color: #666;
+    --back-color:#aaa;
+    font-size: 35px;
+    font-weight: bold;
+    position: relative;
+    z-index:2;
+}

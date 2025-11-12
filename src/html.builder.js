@@ -116,14 +116,14 @@ const writeFileToResponse = (res, filePath) => {
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
         const contentType = getContentTypeByFilePath(filePath);
         const ext = filePath.split('.').pop().toLowerCase();
-        
+
         // Define cache control based on file type
         let cacheControl = 'no-cache';
         if (['css', 'js', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'woff', 'woff2', 'ttf', 'eot', 'otf'].includes(ext)) {
             // Cache static assets for 1 hour
-            cacheControl = 'public, max-age=3600';
+            cacheControl = 'public, max-age=' + 60 * 60 * 24;
         }
-        
+
         res.writeHead(200, {
             'Content-Type': contentType,
             'Cache-Control': cacheControl
@@ -137,5 +137,5 @@ const writeFileToResponse = (res, filePath) => {
 }
 
 module.exports = {
-    buildHtml, getContentTypeByFilePath, parseRequest,writeFileToResponse,write404ToResponse
+    buildHtml, getContentTypeByFilePath, parseRequest, writeFileToResponse, write404ToResponse
 }
