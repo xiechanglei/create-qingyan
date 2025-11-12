@@ -111,6 +111,10 @@ const checkDirs = () => {
             subjects = subjects.filter(s => s.name !== dirName);
         } else {
             const subject = loadSubjectInfoFromDir(absPath);
+            if(subject.lessons.length === 0 || subject.documentCount === 0) {
+                subjects = subjects.filter(s => s.id !== subject.id);
+                return;
+            }
             const existingSubject = subjects.find(s => s.id === subject.id);
             if (existingSubject) {
                 existingSubject.documentCount = subject.documentCount;

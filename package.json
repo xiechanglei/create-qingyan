@@ -1,7 +1,7 @@
 {
   "name": "create-qingyan",
   "description": "创建一个本地服务器用于学习编程",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "author": "xiechanglei",
   "license": "MIT",
   "type": "commonjs",

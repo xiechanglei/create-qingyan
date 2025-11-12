@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const {buildHtml, parseRequest, writeFileToResponse, write404ToResponse} = require("./html.builder");
-const {subjects} = require("./subject");
+const {subjects, watcher} = require("./subject");
 
 
 const handles = {}
@@ -13,14 +13,27 @@ const handles = {}
  */
 handles.handleRootRequest = (res) => {
     const html = buildHtml("Programing Study").addCssLink("/css/index.css").addCssLink("/css/base.css")
-    const content = html.addBody("<div id='pageContent'><h1 class='pro-title'>Available Subjects</h1>")
-        .addBody("<div class='subject-list'>")
-        .addBody(subjects.map(subject => {
-            return `<a target='_blank' class='subject-block btn' href="/${subject.id}">${subject.name}<span class='subject-desc'>(lesson ${subject.lessons.length} | document ${subject.documentCount})</span></a>`
-        }).join(""))
-        .addBody("</div>")
-        .addBody("</div>")
-        .build();
+    const content = html.addBody(` 
+        <div id='pageContent'>
+            <div class="page-header">
+                <h1>Available Subjects</h1>
+                <p>Choose a subject to explore lessons and documentation</p>
+            </div>
+            <div class="subject-list">
+                ${subjects.map(subject => {
+                    return `<a target='_blank' class='subject-block btn' href="/${subject.id}">
+                        <h3>${subject.name}</h3>
+                        <div class='subject-desc'>
+                            <div class="subject-stats">
+                                <span class="lesson-count">${subject.lessons.length} lessons</span>
+                                <span class="doc-count">${subject.documentCount} documents</span>
+                            </div>
+                        </div>
+                    </a>`
+                }).join("")}
+            </div>
+        </div>
+    `).build();
 
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
     res.end(content);
@@ -76,11 +89,21 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                     .addCssLink("/css/subject.css")
                     .addCssLink("/css/base.css")
                     .addJsLink("/js/subject.js")
-                    .addBody("<div id='pageContent'>")
-                    .addBody("<h1 class='pro-title'>" + subject.name + "</h1>")
-                    .addBody(`<div>${subject.lessons.map(lesson => `<span class="lesson-tab" lesson="${lesson.id}">${lesson.name}</span>`).join("")}</div>`)
-                    .addBody(subject.lessons.map(lesson => `<div class="lesson-list" lesson="${lesson.id}">${lesson.docs.map(doc => `<a target="_blank" class="lesson-item btn" href="/${subject.id}/${lesson.id}/${doc.id}" >${doc.name}</a>`).join("")}</div>`).join(""))
-                    .addBody("<div>")
+                    .addBody(`
+                        <div id='pageContent'>
+                            <div class="subject-header">
+                                <h1 class='pro-title'>${subject.name}</h1>
+                            </div>
+                            
+                            <div class="lesson-tabs-container">
+                                <div class="lesson-tabs">
+                                    ${subject.lessons.map(lesson => `<span class="lesson-tab" lesson="${lesson.id}">${lesson.name} <span class="lesson-count-badge">${lesson.docs.length}</span></span>`).join("")}
+                                </div>
+                            </div>
+                            
+                            ${subject.lessons.map(lesson => `<div class="lesson-list" lesson="${lesson.id}"><div class="lesson-grid">${lesson.docs.map(doc => `<a target="_blank" class="lesson-item btn" href="/${subject.id}/${lesson.id}/${doc.id}" ><h3>${doc.name}</h3></a>`).join("")}</div></div>`).join("")}
+                        </div>
+                    `)
                     .build();
 
                 res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
@@ -115,7 +138,17 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                             .addJsLink("/node_modules/prismjs/prism.js")
                             .addJsLink("/node_modules/prismjs/plugins/autoloader/prism-autoloader.js")
                             .addJsLink("/js/markdown-renderer.js")
-                            .addBody(`<div id="pageContent"><div id="docBlock"><h1 class="pro-title">${doc.name}</h1></div></div>`)
+                            .addBody(`
+                                <div id="pageContent">
+                                    <div class="doc-container">
+                                        <div class="doc-header">
+                                            <h1 class="pro-title">${doc.name}</h1>
+                                        </div>
+                                        <div id="docBlock" class="doc-content"></div>
+                                    </div>
+                                </div>
+                                <div class="back-to-top" title="Back to top">↑</div>
+                            `)
                             .addBody(`<template id="md-content">${mdContent}</template>`)
                             .build();
                         res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
@@ -146,11 +179,6 @@ const startWebServer = (port = 3000) => {
     });
     server.on('error', (e) => console.log(e.message));
     server.listen(port, () => console.log(`\nServer is running at http://localhost:${port}`));
-    
-    // Close file watcher when the server closes
-    server.on('close', () => {
-        fileWatcher.unwatchAll();
-    });
 }
 
 module.exports = {
