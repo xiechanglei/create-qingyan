@@ -21,7 +21,7 @@ handles.handleRootRequest = (res) => {
             </div>
             <div class="subject-list">
                 ${subjects.map(subject => {
-                    return `<a target='_blank' class='subject-block btn' href="/${subject.id}">
+        return `<a target='_blank' class='subject-block btn' href="/${subject.id}">
                         <h3>${subject.name}</h3>
                         <div class='subject-desc'>
                             <div class="subject-stats">
@@ -30,7 +30,7 @@ handles.handleRootRequest = (res) => {
                             </div>
                         </div>
                     </a>`
-                }).join("")}
+    }).join("")}
             </div>
         </div>
     `).build();
@@ -178,7 +178,7 @@ const startWebServer = (port = 3000) => {
         }
     });
     server.on('error', (e) => console.log(e.message));
-    server.listen(port, () => console.log(`\nServer is running at http://localhost:${port}`));
+    server.listen(port, () => console.log(`\n 服务启动成功，请点击地址查看 http://localhost:${port}`));
 }
 
 module.exports = {
