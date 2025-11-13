@@ -179,7 +179,7 @@ const startWebServer = (port = 3000) => {
         }
     });
     server.on('error', (e) => console.log(e.message));
-    server.listen(port, () => console.log(`学习服务启动成功，版本 ${packageJson.version} 请使用浏览器访问: http://localhost:${port}`));
+    server.listen(port, () => console.log(`服务启动成功，版本(${packageJson.version})，请使用浏览器访问: http://localhost:${port}`));
 }
 
 module.exports = {
