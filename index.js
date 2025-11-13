@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-const {getCommandOptions, downloadSubjects} = require("./src/utils");
+const {getCommandOptions, downloadSubjects, packageJson} = require("./src/utils");
 const {startWebServer} = require("./src/webserver");
 
 const options = getCommandOptions();
-
+console.log(`欢迎使用轻言课程材料管理工具，当前版本（${packageJson.version}），具体使用方法请参照文档: https://www.npmjs.com/package/create-qingyan`);
 if (options.init) {
     const remoteUrl = options.remoteUrl || 'https://github.com/xiechanglei/program-study-subjects';
     downloadSubjects(remoteUrl).then(() => {

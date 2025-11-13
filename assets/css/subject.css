@@ -8,11 +8,7 @@
 
 /* Lesson tabs navigation */
 .lesson-tabs-container {
-    background: var(--surface-color);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    margin-bottom: 24px;
+    /*margin-bottom: 24px;*/
 }
 
 .lesson-tabs {
@@ -22,7 +18,7 @@
 }
 
 .lesson-tab {
-    padding: 12px 20px;
+    padding: 12px 12px;
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
@@ -46,7 +42,6 @@
 
 .lesson-tab.active {
     color: var(--primary-color);
-    background-color: rgba(79, 70, 229, 0.1);
 }
 
 .lesson-tab.active::after {
@@ -89,9 +84,9 @@
 }
 
 .lesson-item h3 {
-    font-size: 0.9rem;
-    color: var(--primary-color);
-    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--primary-color-dark);
+    font-weight: 400;
     margin: 0;
 }
 
@@ -102,7 +97,7 @@
     padding: 2px 8px;
     border-radius: 12px;
     font-size: 0.8rem;
-    margin-left: 8px;
+    margin-left: 4px;
     transform: scale(0.8);
 }
 

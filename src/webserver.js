@@ -2,8 +2,15 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const {buildHtml, parseRequest, writeFileToResponse, write404ToResponse} = require("./html.builder");
-const {subjects, watcher} = require("./subject");
-const {packageJson} = require("./utils");
+const {subjects} = require("./subject");
+
+const footerContent = `
+                                <footer class="footer">
+                                    <div class="footer-content">
+                                        <p class="footer-text">轻言 - 文档管理工具 @Author <a target="_blank" href="https://github.com/xiechanglei">xiechanglei</p>
+                                    </div>
+                                </footer>
+`
 
 
 const handles = {}
@@ -13,7 +20,10 @@ const handles = {}
  * @param res - 响应对象
  */
 handles.handleRootRequest = (res) => {
-    const html = buildHtml("Programing Study").addCssLink("/css/index.css").addCssLink("/css/base.css")
+    const html = buildHtml("轻言")
+        .addCssLink("/css/index.css")
+        .addCssLink("/css/base.css")
+        .addCssLink("/css/footer.css")
     const content = html.addBody(` 
         <div id='pageContent'>
             <div class="page-header">
@@ -34,6 +44,7 @@ handles.handleRootRequest = (res) => {
     }).join("")}
             </div>
         </div>
+        ${footerContent}
     `).build();
 
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
@@ -89,6 +100,7 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                 const content = buildHtml(`${subject.name}`)
                     .addCssLink("/css/subject.css")
                     .addCssLink("/css/base.css")
+                    .addCssLink("/css/footer.css")
                     .addJsLink("/js/subject.js")
                     .addBody(`
                         <div id='pageContent'>
@@ -104,6 +116,7 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                             
                             ${subject.lessons.map(lesson => `<div class="lesson-list" lesson="${lesson.id}"><div class="lesson-grid">${lesson.docs.map(doc => `<a target="_blank" class="lesson-item btn" href="/${subject.id}/${lesson.id}/${doc.id}" ><h3>${doc.name}</h3></a>`).join("")}</div></div>`).join("")}
                         </div>
+                        ${footerContent}
                     `)
                     .build();
 
@@ -135,6 +148,7 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                             .addCssLink("/css/base.css")
                             .addCssLink("/css/doc.css")
                             .addCssLink("/css/github-markdown.css")
+                            .addCssLink("/css/footer.css")
                             .addJsLink("/node_modules/marked/lib/marked.umd.js")
                             .addJsLink("/node_modules/prismjs/prism.js")
                             .addJsLink("/node_modules/prismjs/plugins/autoloader/prism-autoloader.js")
@@ -149,6 +163,7 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                                     </div>
                                 </div>
                                 <div class="back-to-top" title="Back to top">↑</div>
+                                ${footerContent}
                             `)
                             .addBody(`<template id="md-content">${mdContent}</template>`)
                             .build();
@@ -179,7 +194,7 @@ const startWebServer = (port = 3000) => {
         }
     });
     server.on('error', (e) => console.log(e.message));
-    server.listen(port, () => console.log(`服务启动成功，版本(${packageJson.version})，请使用浏览器访问: http://localhost:${port}`));
+    server.listen(port, () => console.log(`服务启动成功，请使用浏览器访问: http://localhost:${port}`));
 }
 
 module.exports = {

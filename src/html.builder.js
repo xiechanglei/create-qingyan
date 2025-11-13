@@ -36,7 +36,12 @@ HtmlBuilder.prototype.addJsLink = function (jsPath) {
 }
 
 HtmlBuilder.prototype.build = function () {
-    return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">${this.headerHtml}</head><body>${this.bodyHtml}</body>${this.footerHtml}</html>`;
+    return `<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<!--logo-->
+<link rel="icon" href="/images/logo.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">${this.headerHtml}</head>
+<body>${this.bodyHtml}</body>${this.footerHtml}</html>`;
 }
 
 
