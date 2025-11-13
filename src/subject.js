@@ -2,6 +2,7 @@ const chokidar = require('chokidar');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const {getProjectRoot} = require("./utils");
 
 /**
  * 使用sha-256算法根据name生成id
@@ -19,6 +20,7 @@ const isDirectory = (source) => {
 };
 
 
+const __defaultPathId = buildId('root_lessons_placeholder');
 /**
  * 加载指定学科目录下的课程
  * @param subjectPath
@@ -33,7 +35,7 @@ const loadSubjectInfoFromDir = (subjectPath) => {
     }
     let documentCount = 0;
     const lessons = [{
-        id: buildId('root_lessons_placeholder'),
+        id: __defaultPathId,
         name: '未分类',
         docs: []
     }]
@@ -95,15 +97,15 @@ const loadSubjectsFromPath = (basePath) => {
 
 
 // exports
-let subjects = loadSubjectsFromPath(process.cwd());
+let subjects = loadSubjectsFromPath(getProjectRoot());
 
 let autoReloadTimer = null;
 const needReloadDirs = new Set();
 
 const checkDirs = () => {
     needReloadDirs.forEach(dirName => {
-        console.log(`检测到变动，重新加载目录: ${dirName}`);
-        const absPath = path.join(process.cwd(), dirName);
+        // console.log(`检测到变动，重新加载目录: ${dirName}`);
+        const absPath = path.join(getProjectRoot(), dirName);
         if (!isDirectory(absPath)) {
             return;
         }
@@ -111,7 +113,7 @@ const checkDirs = () => {
             subjects = subjects.filter(s => s.name !== dirName);
         } else {
             const subject = loadSubjectInfoFromDir(absPath);
-            if(subject.lessons.length === 0 || subject.documentCount === 0) {
+            if (subject.lessons.length === 0 || subject.documentCount === 0) {
                 subjects = subjects.filter(s => s.id !== subject.id);
                 return;
             }
@@ -127,7 +129,8 @@ const checkDirs = () => {
     needReloadDirs.clear();
 }
 
-const watcher = chokidar.watch(process.cwd(), {
+
+const watcher = chokidar.watch(getProjectRoot(), {
     ignored: /(^|[\/\\])\../,  // 忽略隐藏文件
     persistent: true,
     ignoreInitial: true,  // 忽略初始的 add 事件
@@ -135,22 +138,33 @@ const watcher = chokidar.watch(process.cwd(), {
     depth: 2  // 监听的最大目录深度
 });
 
-watcher.on('all', (event, filePath) => {
-    const relativePath = path.relative(process.cwd(), filePath);
+const handleFileChange = (filePath) => {
+    const relativePath = path.relative(getProjectRoot(), filePath);
     const pathSegments = relativePath.split(path.sep);
     if (pathSegments.length > 0) {
         const subjectDir = pathSegments[0];
         if (subjectDir === '' || subjectDir.startsWith('.')) {
             return; // 忽略根目录和隐藏目录
         }
-        if (isDirectory(path.join(process.cwd(), subjectDir)) === false) {
-            return; // 忽略非目录的变动
+        const subjectPath = path.join(getProjectRoot(), subjectDir);
+        if (fs.existsSync(subjectPath) === false) {
+            subjects = subjects.filter(s => s.name !== subjectDir);
+            return;
+        }
+        if (isDirectory(subjectPath) === false) {
+            return; // 忽略根目录下的非目录的变动
         }
         needReloadDirs.add(subjectDir);
         clearTimeout(autoReloadTimer);
         autoReloadTimer = setTimeout(checkDirs, 1000); // 1秒内的多次变动合并为一次重新加载
     }
-})
+}
+watcher.on("add", handleFileChange);
+watcher.on("addDir", handleFileChange);
+watcher.on("unlink", handleFileChange);
+watcher.on("unlinkDir", handleFileChange);
+
 module.exports = {
-    subjects
+    getAllSubjects: () => subjects,
+    __defaultPathId
 }

@@ -9,6 +9,12 @@ const path = require('path');
 const packageJson = require('../package.json');
 
 /**
+ * 获取项目的根目录
+ * @return {string}
+ */
+const getProjectRoot = () => process.cwd()
+
+/**
  * 从命令行参数中获取所有选项
  * @return {Object} 包含所有命令选项的对象
  */
@@ -69,15 +75,15 @@ const transferStreamToFile = async (stream, filePath, totalSize) => {
  * @return {Promise<void>}
  */
 const downloadSubjects = async (remoteUrl) => {
-    const downloadPath = process.cwd();
-    
+    const downloadPath = getProjectRoot();
+
     // 检查当前目录是否为空
     const files = fs.readdirSync(downloadPath);
     if (files.length > 0) {
         throw new Error('当前目录不为空，请清空目录后重试。如有自己的课程文件，请先备份到其他位置，init成功后再移动回来。');
     }
-    
-    const tempZipPath = path.join(process.cwd(), 'online-subjects.zip');
+
+    const tempZipPath = path.join(downloadPath, 'online-subjects.zip');
 
     let downloadUrl = remoteUrl;
     if (remoteUrl.includes('github.com') && !remoteUrl.includes('archive')) {
@@ -165,5 +171,6 @@ const downloadSubjects = async (remoteUrl) => {
 module.exports = {
     getCommandOptions,
     downloadSubjects,
-    packageJson
+    packageJson,
+    getProjectRoot
 }

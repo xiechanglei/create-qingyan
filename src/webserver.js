@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const {buildHtml, parseRequest, writeFileToResponse, write404ToResponse} = require("./html.builder");
-const {subjects} = require("./subject");
+const {getAllSubjects, __defaultPathId} = require("./subject");
 
 const footerContent = `
                                 <footer class="footer">
@@ -31,7 +31,7 @@ handles.handleRootRequest = (res) => {
                 <p>Choose a subject to explore lessons and documentation</p>
             </div>
             <div class="subject-list">
-                ${subjects.map(subject => {
+                ${getAllSubjects().map(subject => {
         return `<a target='_blank' class='subject-block btn' href="/${subject.id}">
                         <h3>${subject.name}</h3>
                         <div class='subject-desc'>
@@ -91,7 +91,7 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
     if (reqUriDesc.segments.length === 0) {
         write404ToResponse(res);
     } else {
-        const subject = subjects.find(subject => subject.id === reqUriDesc.segments[0]);
+        const subject = getAllSubjects().find(subject => subject.id === reqUriDesc.segments[0]);
         if (subject === undefined) {
             write404ToResponse(res);
         } else {
@@ -126,7 +126,11 @@ handles.handleSubjectRequest = (res, reqUriDesc) => {
                 const lesson = subject.lessons.find(lesson => lesson.id === reqUriDesc.segments[1]);
                 let doc = undefined;
                 if (lesson !== undefined) {
-                    reqUriDesc.segments[1] = lesson.name
+                    if (lesson.id === __defaultPathId) {
+                        reqUriDesc.segments[1] = ''
+                    } else {
+                        reqUriDesc.segments[1] = lesson.name
+                    }
                     doc = lesson.docs.find(doc => doc.id === reqUriDesc.segments[2]);
                     if (doc !== undefined) {
                         reqUriDesc.segments[2] = doc.originalFileName
