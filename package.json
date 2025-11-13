@@ -1,7 +1,7 @@
 {
   "name": "create-qingyan",
   "description": "创建一个本地服务器用于学习编程",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "author": "xiechanglei",
   "license": "MIT",
   "type": "commonjs",
@@ -13,15 +13,18 @@
     "index.js",
     "subjects",
     "assets",
-    "src"
+    "src",
+    "readme.md"
   ],
   "dependencies": {
-    "@types/node": "^22.9.0",
     "adm-zip": "^0.5.16",
     "chokidar": "^4.0.3",
     "commander": "^14.0.2",
     "crypto": "^1.0.1",
     "marked": "^17.0.0",
     "prismjs": "^1.30.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0"
   }
 }

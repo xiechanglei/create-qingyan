@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const {buildHtml, parseRequest, writeFileToResponse, write404ToResponse} = require("./html.builder");
 const {subjects, watcher} = require("./subject");
+const {packageJson} = require("./utils");
 
 
 const handles = {}
@@ -178,7 +179,7 @@ const startWebServer = (port = 3000) => {
         }
     });
     server.on('error', (e) => console.log(e.message));
-    server.listen(port, () => console.log(`\n 服务启动成功，请点击地址查看 http://localhost:${port}`));
+    server.listen(port, () => console.log(`学习服务启动成功，版本 ${packageJson.version} 请使用浏览器访问: http://localhost:${port}`));
 }
 
 module.exports = {

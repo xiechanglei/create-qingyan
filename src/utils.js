@@ -164,5 +164,6 @@ const downloadSubjects = async (remoteUrl) => {
 
 module.exports = {
     getCommandOptions,
-    downloadSubjects
+    downloadSubjects,
+    packageJson
 }
